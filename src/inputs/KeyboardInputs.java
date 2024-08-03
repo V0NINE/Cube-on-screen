@@ -24,20 +24,20 @@ public class KeyboardInputs implements KeyListener{
                 gamePanel.changeHeight(true);
                 break;
             case KeyEvent.VK_A:
-                gamePanel.changeWidth(false);
+                gamePanel.changeWidth(true);
                 break;
             case KeyEvent.VK_S:
                 gamePanel.changeHeight(false);
                 break;
             case KeyEvent.VK_D:
-                gamePanel.changeWidth(true);
+                gamePanel.changeWidth(false);
                 break;
-            case KeyEvent.VK_UP:
-                gamePanel.changeYDelta(false);
-                break;
-            case KeyEvent.VK_DOWN:
-                gamePanel.changeYDelta(true);
-                break;
+            // case KeyEvent.VK_UP:
+            //     gamePanel.changeYDelta(false);
+            //     break;
+            // case KeyEvent.VK_DOWN:
+            //     gamePanel.changeYDelta(true);
+            //     break;
             case KeyEvent.VK_LEFT:
                 gamePanel.changeXDelta(false);
                 break;
