@@ -10,7 +10,7 @@ import java.awt.Graphics;
 public class GamePanel extends JPanel{
 
     private static final int HEIGHT = 50;
-    private static final int WIDTH = 24;
+    private static final int WIDTH = 200;
     private static final int INIT_X_POS = 100;
     private static final int INIT_Y_POS = 100;
 
@@ -73,9 +73,11 @@ public class GamePanel extends JPanel{
                 this.polygon.setBottomPosition(this.polygon.getBottomPosition() - 2);
             }
             else if (this.polygon.getHeight() > 1){
+                int heightToRemove = this.polygon.getHeight() - 1;
+
                 this.polygon.setHeight(1);
-                this.polygon.setTopPosition(this.polygon.getTopPosition() + 1);
-                this.polygon.setBottomPosition(this.polygon.getBottomPosition() - 1);
+                this.polygon.setTopPosition(this.polygon.getTopPosition() + (int) Math.ceil((float) heightToRemove/2));
+                this.polygon.setBottomPosition(this.polygon.getBottomPosition() - (int) Math.floor((float) heightToRemove/2));
             }
         }
 
@@ -102,9 +104,11 @@ public class GamePanel extends JPanel{
                 this.polygon.setRightPosition(this.polygon.getRightPosition() - 2);
             }
             else if (this.polygon.getWidth() > 1){
+                int widthToRemove = this.polygon.getWidth() - 1;
+            
                 this.polygon.setWidth(1);
-                this.polygon.setLeftPosition(this.polygon.getLeftPosition() - 1);
-                this.polygon.setRightPosition(this.polygon.getRightPosition() - 1);
+                this.polygon.setLeftPosition(this.polygon.getLeftPosition() + (int) Math.ceil((float) widthToRemove/2));
+                this.polygon.setRightPosition(this.polygon.getRightPosition() - (int) Math.floor((float) widthToRemove/2));
             }
         }
 
@@ -140,30 +144,34 @@ public class GamePanel extends JPanel{
         repaint();
     }
 
-    // public void changeYDelta(boolean sign) {
-    //     int vertDrawableSize = gameWindow.getScreenHeight() - gameWindow.getVerticalInsets();
+    public void changeYDelta(boolean sign) {
+        int spaceUntilLimit;
 
-    //     System.out.println("GameWindow height: " + gameWindow.getScreenHeight());
-    //     System.out.println("Rectangle height is " + (50+height));
-    //     System.out.println("Vertical insets are " + gameWindow.getVerticalInsets());
-    //     System.out.println("Caluclations are " + (vertDrawableSize-100-(50+height)));
+        if (sign && petitionToMove(DOWN)) {
+            spaceUntilLimit = spaceUntilLimit(DOWN);
+            if (spaceUntilLimit >= 5) {
+                this.polygon.setTopPosition(this.polygon.getTopPosition() + 5);
+                this.polygon.setBottomPosition(this.polygon.getBottomPosition() + 5);
+            }
+            else if (spaceUntilLimit > 0) {
+                this.polygon.setTopPosition(this.polygon.getTopPosition() + spaceUntilLimit);
+                this.polygon.setBottomPosition(this.polygon.getBottomPosition() + spaceUntilLimit);
+            }
+        }
+        else if(!sign && petitionToMove(UP)){
+            spaceUntilLimit = spaceUntilLimit(UP);
+            if (spaceUntilLimit >= 5) {
+                this.polygon.setTopPosition(this.polygon.getTopPosition() - 5);
+                this.polygon.setBottomPosition(this.polygon.getBottomPosition() - 5);
+            }
+            else if (spaceUntilLimit > 0) {
+                this.polygon.setTopPosition(this.polygon.getTopPosition() - spaceUntilLimit);
+                this.polygon.setBottomPosition(this.polygon.getBottomPosition() - spaceUntilLimit);
+            }
+        }
 
-    //     if ((yDelta == -100 && !sign) || (yDelta == vertDrawableSize-100-(50+height) && sign))
-    //         return;
-
-    //     if (yDelta+5 > vertDrawableSize-100-(50+height) && sign) //Rectangle moves 5 by 5 pixels. If the remaining space between the rectangle and the bottom
-    //         yDelta += vertDrawableSize-100-(50+height) - yDelta; //of the window is less than 5, the rectangle moves down only the amount left
-    //     else if (yDelta-5 < -100 && !sign)  //Same as previous reasoning but for the top of the window
-    //         yDelta -= yDelta + 100;
-    //     else if (sign)
-    //         yDelta += 5;
-    //     else
-    //         yDelta -= 5;
-
-    //     System.out.println("yDelta is " + yDelta + "\n");
-
-    //     repaint();
-    // }
+        repaint();
+    }
 
     public boolean petitionToMove(int direction) {
         switch (direction) {

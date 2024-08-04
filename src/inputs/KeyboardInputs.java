@@ -32,12 +32,12 @@ public class KeyboardInputs implements KeyListener{
             case KeyEvent.VK_D:
                 gamePanel.changeWidth(false);
                 break;
-            // case KeyEvent.VK_UP:
-            //     gamePanel.changeYDelta(false);
-            //     break;
-            // case KeyEvent.VK_DOWN:
-            //     gamePanel.changeYDelta(true);
-            //     break;
+            case KeyEvent.VK_UP:
+                gamePanel.changeYDelta(false);
+                break;
+            case KeyEvent.VK_DOWN:
+                gamePanel.changeYDelta(true);
+                break;
             case KeyEvent.VK_LEFT:
                 gamePanel.changeXDelta(false);
                 break;
