@@ -10,7 +10,7 @@ import java.awt.Graphics;
 public class GamePanel extends JPanel{
 
     private static final int HEIGHT = 50;
-    private static final int WIDTH = 200;
+    private static final int WIDTH = 24;
     private static final int INIT_X_POS = 100;
     private static final int INIT_Y_POS = 100;
 
@@ -46,6 +46,10 @@ public class GamePanel extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        System.out.println("Poistion of the cube: R - " + (this.polygon.getRightPosition())
+                                           + " // L - " + this.polygon.getLeftPosition()
+                                           + " // U - " + this.polygon.getTopPosition()
+                                           + " // D - " + (this.polygon.getBottomPosition()));
         g.fillRect(this.polygon.getLeftPosition(), this.polygon.getTopPosition(), this.polygon.getWidth(), this.polygon.getHeight());
     }
 
@@ -99,7 +103,7 @@ public class GamePanel extends JPanel{
             }
             else if (this.polygon.getWidth() > 1){
                 this.polygon.setWidth(1);
-                this.polygon.setLeftPosition(this.polygon.getLeftPosition() + 1);
+                this.polygon.setLeftPosition(this.polygon.getLeftPosition() - 1);
                 this.polygon.setRightPosition(this.polygon.getRightPosition() - 1);
             }
         }
@@ -108,24 +112,28 @@ public class GamePanel extends JPanel{
     }
 
     public void changeXDelta(boolean sign) {
+        int spaceUntilLimit;
+
         if (sign && petitionToMove(RIGHT)) {
-            if (spaceUntilLimit(RIGHT) >= 5) {
+            spaceUntilLimit = spaceUntilLimit(RIGHT);
+            if (spaceUntilLimit >= 5) {
                 this.polygon.setRightPosition(this.polygon.getRightPosition() + 5);
                 this.polygon.setLeftPosition(this.polygon.getLeftPosition() + 5);
             }
-            else if (spaceUntilLimit(RIGHT) > 0) {
-                this.polygon.setRightPosition(this.polygon.getRightPosition() + spaceUntilLimit(RIGHT));
-                this.polygon.setLeftPosition(this.polygon.getLeftPosition() + spaceUntilLimit(RIGHT));
+            else if (spaceUntilLimit > 0) {
+                this.polygon.setRightPosition(this.polygon.getRightPosition() + spaceUntilLimit);
+                this.polygon.setLeftPosition(this.polygon.getLeftPosition() + spaceUntilLimit);
             }
         }
         else if(!sign && petitionToMove(LEFT)){
-            if (spaceUntilLimit(LEFT) >= 5) {
+            spaceUntilLimit = spaceUntilLimit(LEFT);
+            if (spaceUntilLimit >= 5) {
                 this.polygon.setRightPosition(this.polygon.getRightPosition() - 5);
                 this.polygon.setLeftPosition(this.polygon.getLeftPosition() - 5);
             }
-            else if (spaceUntilLimit(LEFT) > 0) {
-                this.polygon.setRightPosition(this.polygon.getRightPosition() - spaceUntilLimit(LEFT));
-                this.polygon.setLeftPosition(this.polygon.getLeftPosition() - spaceUntilLimit(LEFT));
+            else if (spaceUntilLimit > 0) {
+                this.polygon.setRightPosition(this.polygon.getRightPosition() - spaceUntilLimit);
+                this.polygon.setLeftPosition(this.polygon.getLeftPosition() - spaceUntilLimit);
             }
         }
 
@@ -187,10 +195,8 @@ public class GamePanel extends JPanel{
     public int spaceUntilLimit(int direction) {
         switch (direction) {
             case LEFT:
-                System.out.println("Space until LEFT limit: " + this.polygon.getLeftPosition());
                 return this.polygon.getLeftPosition();
             case RIGHT: 
-                System.out.println("Space until RIGHT limit: " + (gameWindow.getScreenWidth() - gameWindow.getHorizontalInsets() - this.polygon.getRightPosition()));
                 return gameWindow.getScreenWidth() - gameWindow.getHorizontalInsets() - this.polygon.getRightPosition();
             case UP: 
                 return this.polygon.getTopPosition();
